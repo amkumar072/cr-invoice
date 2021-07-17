@@ -1,0 +1,13 @@
+{
+  "appId": "io.gys.cr_invoice",
+  "appName": "cr_invoice",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

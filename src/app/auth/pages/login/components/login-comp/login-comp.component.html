@@ -1,0 +1,50 @@
+<form *ngIf="form" [formGroup]="form">
+  <ion-grid>
+
+    <ion-row>
+      <ion-col size-md="6" offset-md="3" class="ion-text-center">
+        <div class="login-logo">
+          <!-- <img src="../../../../assets/image/logo/logo.png" alt="logo"> -->
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <ion-item>
+          <ion-label position="floating">UserName<span class="required-field"></span></ion-label>
+          <ion-input type="text" formControlName="userName" required></ion-input>
+        </ion-item>
+        <ion-item *ngIf="form.get('userName').invalid && (form.get('userName').dirty || form.get('userName').touched)"
+          lines="none">
+          <ion-label color="danger">Enter the UserName</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md=6 offset-md="3">
+        <ion-item>
+          <ion-label position="floating">Password<span class="required-field"></span></ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="form.get('password').invalid && (form.get('password').dirty || form.get('password').touched)"
+          lines="none">
+          <ion-label color="danger">Enter the Password</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <ion-button expand="full" color="primary" (click)="onLogin()">
+          <ion-label color="light"> log-in</ion-label>
+          <ion-icon color="light" slot="end" name="log-in-outline"> </ion-icon>
+        </ion-button>
+        <ion-button expand="full" color="danger" (click)="onClear()">
+          <ion-label color="light"> clear</ion-label>
+          <ion-icon color="light" slot="end" name="close-outline"> </ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</form>

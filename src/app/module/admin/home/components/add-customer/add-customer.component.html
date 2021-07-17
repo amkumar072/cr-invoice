@@ -1,0 +1,176 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end" (click)="dismissComp()">
+      <ion-button>
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Customer Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form *ngIf="form" [formGroup]="form">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">First Name<span class="required-field"></span></ion-label>
+            <ion-input type="text" formControlName="firstName" required></ion-input>
+          </ion-item>
+          <ion-item
+            *ngIf="form.get('firstName').invalid && (form.get('firstName').dirty || form.get('firstName').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the FirstName</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-sm="3">
+          <ion-item>
+            <ion-label position="floating">Last Name</ion-label>
+            <ion-input type="text" formControlName="lastName"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.get('lastName').invalid && (form.get('lastName').dirty || form.get('lastName').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the LastName</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" formControlName="email" email="true"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Primary Number<span class="required-field"></span></ion-label>
+            <ion-input type="string" formControlName="phoneNumber" minlength="10" maxlength="10" pattern="\d*">
+            </ion-input>
+          </ion-item>
+          <ion-item
+            *ngIf="form.get('phoneNumber').invalid && (form.get('phoneNumber').dirty || form.get('phoneNumber').touched)"
+            lines="none">
+            <ion-label *ngIf="form.get('phoneNumber').errors.required" color="danger">Enter the Phone Number
+            </ion-label>
+            <ion-label *ngIf="form.get('phoneNumber').errors.pattern" color="danger">Enter only Numbers
+            </ion-label>
+            <ion-label *ngIf="form.get('phoneNumber').errors.minlength" color="danger">Enter the 10 Digits
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Address Line 1<span class="required-field"></span></ion-label>
+            <ion-textarea formControlName="addressLine1">
+            </ion-textarea>
+          </ion-item>
+          <ion-item
+            *ngIf="form.get('addressLine1').invalid && (form.get('addressLine1').dirty || form.get('addressLine1').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the Address Line 1</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Address Line 2 </ion-label>
+            <ion-input type="text" formControlName="addressLine2">
+            </ion-input>
+          </ion-item>
+          <ion-item
+            *ngIf="form.get('addressLine2').invalid && (form.get('addressLine2').dirty || form.get('addressLine2').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the Address Line 2</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">City <span class="required-field"></span></ion-label>
+            <ion-input type="text" formControlName="city">
+            </ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.get('city').invalid && (form.get('city').dirty || form.get('city').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the City</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">State <span class="required-field"></span></ion-label>
+            <ion-input type="text" formControlName="state"> </ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.get('state').invalid && (form.get('state').dirty || form.get('state').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the State</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Country <span class="required-field"></span></ion-label>
+            <ion-input type="text" formControlName="country"> </ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.get('country').invalid && (form.get('country').dirty || form.get('country').touched)"
+            lines="none">
+            <ion-label color="danger">Enter the Country</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Pincode <span class="required-field"></span></ion-label>
+            <ion-input type="text" minlength="6" maxlength="6" pattern="\d*" formControlName="pincode"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.get('pincode').invalid && (form.get('pincode').dirty || form.get('pincode').touched)"
+            lines="none">
+            <ion-label *ngIf="form.get('pincode').errors.required" color="danger">Enter the Pincode
+            </ion-label>
+            <ion-label *ngIf="form.get('pincode').errors.pattern" color="danger">Enter only Numbers
+            </ion-label>
+            <ion-label *ngIf="form.get('pincode').errors.minlength" color="danger">Enter the 6 Digits
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">GST Number </ion-label>
+            <ion-input type="text" formControlName="gstNumber"> </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-button expand="block" color="primary" (click)="onClick()">
+            <ion-label color="light"> Add</ion-label>
+          </ion-button>
+        </ion-col>
+        <ion-col size-sm="3">
+          <ion-button expand="block" color="danger" (click)="dismissComp()">
+            <ion-label color="light"> Close</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </form>
+</ion-content>

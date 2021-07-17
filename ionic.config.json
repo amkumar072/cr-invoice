@@ -1,0 +1,7 @@
+{
+  "name": "cr_invoice",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

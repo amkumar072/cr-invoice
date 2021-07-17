@@ -1,0 +1,252 @@
+<div>
+  <form *ngIf="form" [formGroup]="form">
+    <ion-grid>
+      <ion-row>
+        <!-- <ion-col size-xs="6" size-md="3">
+          <ion-item>
+            <ion-label *ngIf="customer.firstName!=null">{{customer.firstName}} </ion-label>
+            <ion-label *ngIf="customer && customer.firstName===undefined && !customerDetailsError">
+              Enter Customer Details</ion-label>
+            <ion-label *ngIf="customer && customer.firstName===undefined && customerDetailsError" color="danger">
+              Enter Customer Details
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-button (click)="onAddCustomer()">
+                <ion-icon slot="icon-only" color="primary" name="person-add-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="6" size-md="3">
+          <ion-item>
+            <ion-label position="floating">InvoiceNumber</ion-label>
+            <ion-input type="text" formControlName="invoiceNumber"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="6" size-md="3">
+          <ion-item>
+            <ion-label position="floating">Select Date</ion-label>
+            <ion-datetime formControlName="invoiceDate"> </ion-datetime>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="6" size-md="3">
+          <ion-item>
+            <ion-label position="floating">Total</ion-label>
+            <ion-input formControlName="total"> </ion-input>
+          </ion-item>
+        </ion-col> -->
+
+
+        <ion-col size-xs="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-card>
+            <ion-item lines="none">
+              <ion-card-header>
+                <ion-card-subtitle>Bill To <span class="required-field"></span></ion-card-subtitle>
+                <ion-card-subtitle>{{customer?.firstName}} {{customer?.lastName}}</ion-card-subtitle>
+                <ion-card-subtitle *ngIf="customer.firstName">+91 {{customer?.phoneNumber}}</ion-card-subtitle>
+                <ion-card-subtitle *ngIf="customer.firstName">
+                  {{customer?.addressLine1}},
+                  {{customer?.city}}, {{customer?.state}}, {{customer?.country}} <br />
+                  {{customer?.email}} <br />
+                  {{customer?.gstNumber}}
+                </ion-card-subtitle>
+              </ion-card-header>
+
+              <ion-buttons slot="end">
+                <ion-button (click)="onAddCustomer()">
+                  <ion-icon slot="icon-only" color="primary" name="person-add-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-item>
+
+          </ion-card>
+
+        </ion-col>
+
+        <ion-col size-xs="12" size-sm="12" size-md="6" size-lg="6">
+          <ion-item>
+            <ion-label position="floating">InvoiceNumber</ion-label>
+            <ion-input type="text" formControlName="invoiceNumber"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Select Date</ion-label>
+            <ion-datetime formControlName="invoiceDate"> </ion-datetime>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Total</ion-label>
+            <ion-input formControlName="total"> </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <!-- Duty Calculations -->
+        <ion-col formGroupName="dutyCalculation" size-xs="6" size-sm="6" size-md="6">
+          <ion-card class="ion-padding ion-text-center">
+            <ion-card-subtitle>Duty Calculations</ion-card-subtitle>
+          </ion-card>
+
+          <ion-item>
+            <ion-label position="stacked">Invoice Value</ion-label>
+            <ion-input type="number" formControlName="invoiceValue" (ionChange)="onDutyCalChanges()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Exchange Rate</ion-label>
+            <ion-input type="number" formControlName="exchangeRate" (ionChange)="onDutyCalChanges()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Assessiable Value</ion-label>
+            <ion-input formControlName="assessiableValue"></ion-input>
+          </ion-item>
+
+          <!-- </ion-col>
+
+        <ion-col size-xs="6" size-sm="6" size-md="4"> -->
+          <ion-item>
+            <ion-label position="stacked">basicTax</ion-label>
+            <ion-input formControlName="basicTax"></ion-input>
+
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">cvd</ion-label>
+            <ion-input formControlName="cvd"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">socialWelfare</ion-label>
+            <ion-input formControlName="socialWelfare"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">IGST</ion-label>
+            <ion-input formControlName="IGST"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Total Value</ion-label>
+            <ion-input formControlName="totalValue"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <!-- Freight Calculations -->
+        <ion-col formGroupName="freightCalculation" size-xs="6" size-sm="6" size-md="6">
+          <ion-card class="ion-padding ion-text-center">
+            <ion-card-subtitle>Freight Calculations</ion-card-subtitle>
+          </ion-card>
+          <ion-item>
+            <ion-label position="stacked">Price</ion-label>
+            <ion-input type="number" formControlName="price" (ionChange)="onFreightCalChanges()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Weight</ion-label>
+            <ion-input type="number" formControlName="weight" (ionChange)="onFreightCalChanges()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Sub Value</ion-label>
+            <ion-input formControlName="subTotal"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount</ion-label>
+            <ion-input type="number" formControlName="discount" (ionChange)="onFreightCalChanges()"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked"> Total</ion-label>
+            <ion-input formControlName="total"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+
+
+        <!-- Customize Charges -->
+        <ion-col formGroupName="customizeCharges" size-xs="4" size-sm="4" size-md="4">
+          <ion-card class="ion-padding ion-text-center">
+            <ion-card-subtitle>Customize Charges</ion-card-subtitle>
+          </ion-card>
+          <ion-item>
+            <ion-label position="stacked">Price</ion-label>
+            <ion-input type="number" formControlName="price" (ionChange)="onCustomizeChargesChanages()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount</ion-label>
+            <ion-input type="number" formControlName="discount" (ionChange)="onCustomizeChargesChanages()"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked"> Total</ion-label>
+            <ion-input formControlName="total"></ion-input>
+          </ion-item>
+        </ion-col>
+
+
+        <!-- Additional Charges -->
+        <ion-col formGroupName="additionalCharges" size-xs="4" size-sm="4" size-md="4">
+          <ion-card class="ion-padding ion-text-center">
+            <ion-card-subtitle>Additional Charges</ion-card-subtitle>
+          </ion-card>
+          <ion-item>
+            <ion-label position="stacked">Price</ion-label>
+            <ion-input type="number" formControlName="price" (ionChange)="onAdditionalChargesChanages()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount</ion-label>
+            <ion-input type="number" formControlName="discount" (ionChange)="onAdditionalChargesChanages()"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked"> Total</ion-label>
+            <ion-input formControlName="total"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <!-- Annual Maintainance Charges -->
+        <ion-col formGroupName="annualMaintainanceCharges" size-xs="4" size-sm="4" size-md="4">
+          <ion-card class="ion-padding ion-text-center">
+            <ion-card-subtitle>Annual Maintainance</ion-card-subtitle>
+          </ion-card>
+          <ion-item>
+            <ion-label position="stacked">Price</ion-label>
+            <ion-input type="number" formControlName="price" (ionChange)="onAnnualMaintainanceChargesChanages()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount</ion-label>
+            <ion-input type="number" formControlName="discount" (ionChange)="onAnnualMaintainanceChargesChanages()">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked"> Total</ion-label>
+            <ion-input formControlName="total"></ion-input>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-button expand="block" color="primary" (click)="onClick()">
+            <ion-label color="light"> {{displayButtonText}}</ion-label>
+          </ion-button>
+        </ion-col>
+        <ion-col size-sm="3">
+          <ion-button expand="block" color="danger" (click)="onCancel()">
+            <ion-label color="light"> Cancel</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+
+
+    </ion-grid>
+
+  </form>
+</div>
