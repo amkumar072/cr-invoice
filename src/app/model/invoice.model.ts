@@ -27,7 +27,8 @@ export class Product {
   price: number;
   quantity: number;
   taxableValue: number;
-  gstValue: number;
+  cgstValue: number;
+  sgstValue: number;
   finalValue: number;
 }
 

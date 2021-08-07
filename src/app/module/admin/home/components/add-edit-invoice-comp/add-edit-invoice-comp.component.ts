@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Organization } from 'src/app/model/organization.model';
 import { OrganizationService } from 'src/app/services/organization.service';
 import { LoggerService } from 'src/app/services/util/logger/logger.service';
-import { Charges, Customer, DutyCalculation, FreightCalculation, Invoice, Status } from 'src/app/model/invoice.model';
+import { Charges, Customer, DutyCalculation, FreightCalculation, Invoice, Product, Status } from 'src/app/model/invoice.model';
 import { ModalUtilService } from 'src/app/services/util/modal/modal-util.service';
 import { AppConstants } from 'src/app/constants/app-constants';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
@@ -98,8 +98,100 @@ export class AddEditInvoiceCompComponent implements OnInit {
       invoiceDate: [this.invoice.invoiceDate, [Validators.required]],
       poNumber: [this.invoice.poNumber, [Validators.required]],
       poDate: [this.invoice.poDate, [Validators.required]],
-      total: [{ value: this.invoice.totalFinalValue, disabled: true }, [Validators.required]]
+      products: this._fb.array([]),
     });
+
+    const products: FormArray = this.form.get('products') as FormArray;    
+    if (!this.isEdit) {
+      products.push(this.createNewProductFieldGroup());
+    } else {
+      this.invoice.products.forEach(product => {
+        products.push(this.createNewProductFieldGroup(product));
+      });
+    }
+  }
+
+  createNewProductFieldGroup(product?: Product): FormGroup {
+    // Destructuring
+    const {
+      sno, description, hsn, gstPercentage,
+      price, quantity, taxableValue, cgstValue,
+      sgstValue, finalValue
+    } = product || {};
+
+    const products: FormArray = this.form.get('products') as FormArray;
+    // Creating a form group for products field.
+    const newProductFieldGroup: FormGroup = this._fb.group({
+      sno: [sno || '', [Validators.required]],
+      description: [description, [Validators.required]],
+      hsn: [hsn, [Validators.required]],
+      gstPercentage: [gstPercentage, [Validators.required]],
+      price: [price, [Validators.required]],
+      quantity: [quantity, [Validators.required]],
+      taxableValue: [{ value: taxableValue, disabled: true }, [Validators.required]],
+      cgstValue: [{ value: cgstValue, disabled: true }, [Validators.required]],
+      sgstValue: [{ value: sgstValue, disabled: true }, [Validators.required]],
+      finalValue: [{ value: finalValue, disabled: true }, [Validators.required]],
+    });
+
+    // Function to update the price fields of the newly created form group.
+    const updatePriceFieldValues = (gstPercentage, price, quantity) => {
+      console.log('asdfdsaf', { gstPercentage, price, quantity });
+      if (gstPercentage && price && quantity) {
+        const taxableValue = price * quantity;
+        const gstValue = (price * gstPercentage / 100) * quantity;
+        const cgstValue = gstValue / 2;
+        const sgstValue = gstValue / 2;
+        const finalValue = taxableValue + gstValue;
+
+        newProductFieldGroup.patchValue({
+          taxableValue, cgstValue, sgstValue, finalValue
+        });
+      } else {
+        newProductFieldGroup.patchValue({
+          taxableValue: '',
+          cgstValue: '',
+          sgstValue: '',
+          finalValue: '',
+        })
+      }
+    };
+
+
+    // Subscribing to the fields whose change would modify the final price of the product.
+    newProductFieldGroup.get('gstPercentage').valueChanges
+      .subscribe(gstPercentage => {
+        const { price, quantity } = newProductFieldGroup.value;
+        updatePriceFieldValues(gstPercentage, price, quantity);
+      });
+
+    newProductFieldGroup.get('price').valueChanges
+      .subscribe(price => {
+        const { gstPercentage, quantity } = newProductFieldGroup.value;
+        updatePriceFieldValues(gstPercentage, price, quantity);
+      });
+
+    newProductFieldGroup.get('quantity').valueChanges
+      .subscribe(quantity => {
+        const { gstPercentage, price } = newProductFieldGroup.value;
+        updatePriceFieldValues(gstPercentage, price, quantity);
+      });
+
+    return newProductFieldGroup;
+  }
+
+  addNewProductFieldsToForm(): void {
+    const products: FormArray = this.form.get('products') as FormArray;
+    products.push(this.createNewProductFieldGroup());
+  }
+
+  removeProductFieldsToForm(index: number): void {
+    const products: FormArray = this.form.get('products') as FormArray;
+    if (products.length > 1) {
+      products.removeAt(index);
+    } else {
+      this._toastUtilService.presentToast('Atleast one product should be present');
+    }
   }
 
   async onAddCustomer(): Promise<void> {

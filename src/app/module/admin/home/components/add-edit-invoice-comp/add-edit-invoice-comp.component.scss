@@ -1,0 +1,19 @@
+.product-title-container {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    height: 48px;
+}
+
+.product-title {
+    font-size: 22px;
+    margin: 0px 16px;
+}
+
+.product-field-container {
+    margin-bottom: 24px;
+}
+
+ion-label.opacity-8 {
+    opacity: 0.6 !important;
+}
