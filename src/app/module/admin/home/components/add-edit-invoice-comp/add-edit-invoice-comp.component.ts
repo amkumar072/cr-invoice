@@ -83,8 +83,6 @@ export class AddEditInvoiceCompComponent implements OnInit {
   async fetchInvoiceDetial(id: string): Promise<void> {
     this.invoice = await this._invoiceService.getInvoiceById(id);
     this.customer = this.invoice.customer;
-
-    // TODO-loges
   }
 
   async fetchOrgDetail(): Promise<void> {
@@ -92,7 +90,6 @@ export class AddEditInvoiceCompComponent implements OnInit {
   }
 
   formControl() {
-    // TODO-loges
     this.form = this._fb.group({
       invoiceNumber: [this.invoice.invoiceNumber, [Validators.required]],
       invoiceDate: [this.invoice.invoiceDate, [Validators.required]],

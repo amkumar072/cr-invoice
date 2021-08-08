@@ -20,8 +20,6 @@ export class HomePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // TODO-loges
-    this.onAdd();
   }
 
   ionViewWillEnter() {
