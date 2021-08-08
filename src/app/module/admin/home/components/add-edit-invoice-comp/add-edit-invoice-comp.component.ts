@@ -82,7 +82,6 @@ export class AddEditInvoiceCompComponent implements OnInit {
 
   async fetchInvoiceDetial(id: string): Promise<void> {
     this.invoice = await this._invoiceService.getInvoiceById(id);
-    console.log('inv', this.invoice);
     this.customer = this.invoice.customer;
 
     // TODO-loges
@@ -116,6 +115,27 @@ export class AddEditInvoiceCompComponent implements OnInit {
     }
   }
 
+  recalculateOrderTotal(): void {
+    const products: Product[] = this.form.get('products').value;
+    let totalTaxableValue = 0, totalCgstValue = 0, totalSgstValue = 0, totalFinalValue = 0;
+
+    products.forEach(({ taxableValue, cgstValue, sgstValue, finalValue }) => {
+      if (taxableValue && cgstValue && sgstValue && finalValue) {
+        totalTaxableValue += taxableValue;
+        totalCgstValue += cgstValue;
+        totalSgstValue += sgstValue;
+        totalFinalValue += finalValue;
+      }
+    });
+
+    this.form.patchValue({
+      totalTaxableValue,
+      totalCgstValue,
+      totalSgstValue,
+      totalFinalValue
+    });
+  }
+
   createNewProductFieldGroup(product?: Product): FormGroup {
     // Destructuring
     const {
@@ -138,34 +158,8 @@ export class AddEditInvoiceCompComponent implements OnInit {
       finalValue: [finalValue, [Validators.required]],
     });
 
-    const recalculateOrderTotal = (): void => {
-      const products: Product[] = this.form.get('products').value;
-      console.log('products', products);
-      let totalTaxableValue = 0, totalCgstValue = 0, totalSgstValue = 0, totalFinalValue = 0;
-
-      products.forEach(({ taxableValue, cgstValue, sgstValue, finalValue }) => {
-        console.log('ee', { taxableValue, cgstValue, sgstValue, finalValue })
-        if (taxableValue && cgstValue && sgstValue && finalValue) {
-          totalTaxableValue += taxableValue;
-          totalCgstValue += cgstValue;
-          totalSgstValue += sgstValue;
-          totalFinalValue += finalValue;
-        }
-      });
-
-      console.log('ffff', {totalTaxableValue, totalCgstValue, totalSgstValue, totalFinalValue});
-
-      this.form.patchValue({
-        totalTaxableValue,
-        totalCgstValue,
-        totalSgstValue,
-        totalFinalValue
-      });
-    }
-
     // Function to update the price fields of the newly created form group.
     const updatePriceFieldValues = (gstPercentage, price, quantity) => {
-      console.log('asdfdsaf', { gstPercentage, price, quantity });
       if (gstPercentage && price && quantity) {
         const taxableValue = price * quantity;
         const gstValue = (price * gstPercentage / 100) * quantity;
@@ -185,7 +179,7 @@ export class AddEditInvoiceCompComponent implements OnInit {
         });
       }
 
-      recalculateOrderTotal();
+      this.recalculateOrderTotal();
     };
 
 
@@ -220,7 +214,7 @@ export class AddEditInvoiceCompComponent implements OnInit {
     const products: FormArray = this.form.get('products') as FormArray;
     if (products.length > 1) {
       products.removeAt(index);
-      
+      this.recalculateOrderTotal();
     } else {
       this._toastUtilService.presentToast('Atleast one product should be present');
     }
