@@ -10,7 +10,8 @@ export class Invoice {
   deliveryPlace: string;
   products: Product[];
   totalTaxableValue: number;
-  totalGstValue: number;
+  totalCgstValue: number;
+  totalSgstValue: number;
   totalFinalValue: number;
   status: Status;
   createdDate: Date;
@@ -20,7 +21,6 @@ export class Invoice {
 }
 
 export class Product {
-  sno: number;
   description: string;
   hsn: number;
   gstPercentage: number;

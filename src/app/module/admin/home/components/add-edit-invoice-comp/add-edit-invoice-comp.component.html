@@ -149,34 +149,72 @@
 
                 <ion-col size-md="3" size-sm="12">
                   <ion-item>
-                    <ion-label class="opacity-8" position="floating">Taxable Value</ion-label>
-                    <ion-input class="opacity-8" formControlName="taxableValue"> </ion-input>
+                    <ion-label class="opacity-7" position="floating">Taxable Value</ion-label>
+                    <ion-input class="opacity-7" formControlName="taxableValue" readonly> </ion-input>
                   </ion-item>
                 </ion-col>
 
                 <ion-col size-md="3" size-sm="12">
                   <ion-item>
-                    <ion-label class="opacity-8" position="floating">Sgst Value</ion-label>
-                    <ion-input class="opacity-8" formControlName="sgstValue"> </ion-input>
+                    <ion-label class="opacity-7" position="floating">Cgst Value</ion-label>
+                    <ion-input class="opacity-7" formControlName="cgstValue" readonly> </ion-input>
                   </ion-item>
                 </ion-col>
 
                 <ion-col size-md="3" size-sm="12">
                   <ion-item>
-                    <ion-label class="opacity-8" position="floating">Cgst Value</ion-label>
-                    <ion-input class="opacity-8" formControlName="cgstValue"> </ion-input>
+                    <ion-label class="opacity-7" position="floating">Sgst Value</ion-label>
+                    <ion-input class="opacity-7" formControlName="sgstValue" readonly> </ion-input>
                   </ion-item>
                 </ion-col>
 
                 <ion-col size-md="3" size-sm="12">
                   <ion-item>
-                    <ion-label class="opacity-8" position="floating">Final Value</ion-label>
-                    <ion-input class="opacity-8" formControlName="finalValue"> </ion-input>
+                    <ion-label class="opacity-7 bold" position="floating">Final Value</ion-label>
+                    <ion-input class="opacity-7 bold" formControlName="finalValue" readonly> </ion-input>
                   </ion-item>
                 </ion-col>
               </ion-row>
             </div>
           </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Taxable Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalTaxableValue}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Cgst Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalCgstValue}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Sgst Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalSgstValue}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Final Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalFinalValue}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
         </ion-col>
       </ion-row>
 
@@ -194,7 +232,7 @@
       </ion-row>
 
 
-      
+
     </ion-grid>
 
   </form>

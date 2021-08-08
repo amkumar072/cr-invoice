@@ -82,6 +82,7 @@ export class AddEditInvoiceCompComponent implements OnInit {
 
   async fetchInvoiceDetial(id: string): Promise<void> {
     this.invoice = await this._invoiceService.getInvoiceById(id);
+    console.log('inv', this.invoice);
     this.customer = this.invoice.customer;
 
     // TODO-loges
@@ -99,9 +100,13 @@ export class AddEditInvoiceCompComponent implements OnInit {
       poNumber: [this.invoice.poNumber, [Validators.required]],
       poDate: [this.invoice.poDate, [Validators.required]],
       products: this._fb.array([]),
+      totalTaxableValue: [this.invoice.totalTaxableValue || 0, [Validators.required]],
+      totalCgstValue: [this.invoice.totalCgstValue || 0, [Validators.required]],
+      totalSgstValue: [this.invoice.totalSgstValue || 0, [Validators.required]],
+      totalFinalValue: [this.invoice.totalFinalValue || 0, [Validators.required]],
     });
 
-    const products: FormArray = this.form.get('products') as FormArray;    
+    const products: FormArray = this.form.get('products') as FormArray;
     if (!this.isEdit) {
       products.push(this.createNewProductFieldGroup());
     } else {
@@ -114,7 +119,7 @@ export class AddEditInvoiceCompComponent implements OnInit {
   createNewProductFieldGroup(product?: Product): FormGroup {
     // Destructuring
     const {
-      sno, description, hsn, gstPercentage,
+      description, hsn, gstPercentage,
       price, quantity, taxableValue, cgstValue,
       sgstValue, finalValue
     } = product || {};
@@ -122,17 +127,41 @@ export class AddEditInvoiceCompComponent implements OnInit {
     const products: FormArray = this.form.get('products') as FormArray;
     // Creating a form group for products field.
     const newProductFieldGroup: FormGroup = this._fb.group({
-      sno: [sno || '', [Validators.required]],
       description: [description, [Validators.required]],
       hsn: [hsn, [Validators.required]],
       gstPercentage: [gstPercentage, [Validators.required]],
       price: [price, [Validators.required]],
       quantity: [quantity, [Validators.required]],
-      taxableValue: [{ value: taxableValue, disabled: true }, [Validators.required]],
-      cgstValue: [{ value: cgstValue, disabled: true }, [Validators.required]],
-      sgstValue: [{ value: sgstValue, disabled: true }, [Validators.required]],
-      finalValue: [{ value: finalValue, disabled: true }, [Validators.required]],
+      taxableValue: [taxableValue, [Validators.required]],
+      cgstValue: [cgstValue, [Validators.required]],
+      sgstValue: [sgstValue, [Validators.required]],
+      finalValue: [finalValue, [Validators.required]],
     });
+
+    const recalculateOrderTotal = (): void => {
+      const products: Product[] = this.form.get('products').value;
+      console.log('products', products);
+      let totalTaxableValue = 0, totalCgstValue = 0, totalSgstValue = 0, totalFinalValue = 0;
+
+      products.forEach(({ taxableValue, cgstValue, sgstValue, finalValue }) => {
+        console.log('ee', { taxableValue, cgstValue, sgstValue, finalValue })
+        if (taxableValue && cgstValue && sgstValue && finalValue) {
+          totalTaxableValue += taxableValue;
+          totalCgstValue += cgstValue;
+          totalSgstValue += sgstValue;
+          totalFinalValue += finalValue;
+        }
+      });
+
+      console.log('ffff', {totalTaxableValue, totalCgstValue, totalSgstValue, totalFinalValue});
+
+      this.form.patchValue({
+        totalTaxableValue,
+        totalCgstValue,
+        totalSgstValue,
+        totalFinalValue
+      });
+    }
 
     // Function to update the price fields of the newly created form group.
     const updatePriceFieldValues = (gstPercentage, price, quantity) => {
@@ -153,8 +182,10 @@ export class AddEditInvoiceCompComponent implements OnInit {
           cgstValue: '',
           sgstValue: '',
           finalValue: '',
-        })
+        });
       }
+
+      recalculateOrderTotal();
     };
 
 
@@ -189,6 +220,7 @@ export class AddEditInvoiceCompComponent implements OnInit {
     const products: FormArray = this.form.get('products') as FormArray;
     if (products.length > 1) {
       products.removeAt(index);
+      
     } else {
       this._toastUtilService.presentToast('Atleast one product should be present');
     }
