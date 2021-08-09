@@ -188,3 +188,7 @@ ion-card,
     color: var(--ion-color-light-contrast) !important;
   }
 }
+
+ion-input.opacity-7 .native-input[disabled].sc-ion-input-md {
+  opacity: 0.7 !important;
+}

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { AppConstants } from 'src/app/constants/app-constants';
 import { UrlUIConstants } from 'src/app/constants/url-ui-constants';
-import { Invoice, Customer, DutyCalculation, FreightCalculation, Charges, Status } from 'src/app/model/invoice.model';
+import { Invoice, Customer, DutyCalculation, FreightCalculation, Charges, Status, Product } from 'src/app/model/invoice.model';
 import { Organization } from 'src/app/model/organization.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { OrganizationService } from 'src/app/services/organization.service';
@@ -45,6 +45,7 @@ export class InvoiceViewComponent implements OnInit {
     private _navCtrl: NavController,
     private _orgService: OrganizationService,
     private _pdfService: PdfService,
+    private _fb: FormBuilder,
   ) { }
 
   async ngOnInit() {
@@ -71,33 +72,43 @@ export class InvoiceViewComponent implements OnInit {
   }
 
   formControl() {
-    this.form = new FormGroup({
-      invoiceNumber: new FormControl({
-        value: this.invoice.invoiceNumber,
-        disabled: true
-      }, {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      invoiceDate: new FormControl({
-        value: this.invoice.invoiceDate,
-        disabled: true
-      }, {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      dutyCalculation: this.dutyCalculationFormGroup(),
-      freightCalculation: this.freightCalculationFormGroup(),
-      customizeCharges: this.customizeChargesFormGroup(),
-      additionalCharges: this.additionalChargesFormGroup(),
-      annualMaintainanceCharges: this.annualMaintainanceChargesFormGroup(),
-      total: new FormControl({
-        value: this.invoice.totalFinalValue,
-        disabled: true
-      }, {
-        updateOn: 'change',
-        validators: [Validators.required]
-      })
+    this.form = this._fb.group({
+      invoiceNumber: [{ value: this.invoice.invoiceNumber, disabled: true }],
+      invoiceDate: [{ value: this.invoice.invoiceDate, disabled: true }],
+      poNumber: [{ value: this.invoice.poNumber, disabled: true }],
+      poDate: [{ value: this.invoice.poDate, disabled: true }],
+      products: this._fb.array([]),
+      totalTaxableValue: [{ value: this.invoice.totalTaxableValue, disabled: true }],
+      totalCgstValue: [{ value: this.invoice.totalCgstValue, disabled: true }],
+      totalSgstValue: [{ value: this.invoice.totalSgstValue, disabled: true }],
+      totalFinalValue: [{ value: this.invoice.totalFinalValue, disabled: true }],
+    });
+
+    const products: FormArray = this.form.get('products') as FormArray;
+    this.invoice.products.forEach(product => {
+      products.push(this.createNewProductFieldGroup(product));
+    });
+
+  }
+
+  createNewProductFieldGroup(product?: Product): FormGroup {
+    // Destructuring
+    const {
+      description, hsn, gstPercentage,
+      price, quantity, taxableValue, cgstValue,
+      sgstValue, finalValue
+    } = product;
+
+    return this._fb.group({
+      description: [{ value: description, disabled: true }],
+      hsn: [{ value: hsn, disabled: true }],
+      gstPercentage: [{ value: gstPercentage, disabled: true }],
+      price: [{ value: price, disabled: true }],
+      quantity: [{ value: quantity, disabled: true }],
+      taxableValue: [{ value: taxableValue, disabled: true }],
+      cgstValue: [{ value: cgstValue, disabled: true }],
+      sgstValue: [{ value: sgstValue, disabled: true }],
+      finalValue: [{ value: finalValue, disabled: true }],
     });
   }
 
