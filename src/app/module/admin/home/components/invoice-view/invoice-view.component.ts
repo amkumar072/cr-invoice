@@ -57,11 +57,7 @@ export class InvoiceViewComponent implements OnInit {
 
     this.invoice = await this._invoiceService.getInvoiceById(id);
     this.customer = this.invoice.customer;
-    this.dutyCalculationLocal = this.invoice.dutyCalculation;
-    this.freightCalculationLocal = this.invoice.freightCalculation;
-    this.customizeChargesLocal = this.invoice.customizeCharges;
-    this.additionalChargesLocal = this.invoice.additionalCharges;
-    this.annualMaintainanceChargesLocal = this.invoice.annualMaintainanceCharges;
+    // TODO-loges
 
     if (this.invoice.status === Status.QUOTE) {
       this.visibleEditCustomerButton = true;
@@ -96,7 +92,7 @@ export class InvoiceViewComponent implements OnInit {
       additionalCharges: this.additionalChargesFormGroup(),
       annualMaintainanceCharges: this.annualMaintainanceChargesFormGroup(),
       total: new FormControl({
-        value: this.invoice.total,
+        value: this.invoice.totalFinalValue,
         disabled: true
       }, {
         updateOn: 'change',

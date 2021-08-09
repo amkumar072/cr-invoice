@@ -5,17 +5,31 @@ export class Invoice {
   customer: Customer;
   invoiceNumber: string;
   invoiceDate: Date;
-  dutyCalculation: DutyCalculation;
-  freightCalculation: FreightCalculation;
-  customizeCharges: Charges;
-  additionalCharges: Charges;
-  annualMaintainanceCharges: Charges;
-  total: number;
+  poNumber: string;
+  poDate: Date;
+  deliveryPlace: string;
+  products: Product[];
+  totalTaxableValue: number;
+  totalCgstValue: number;
+  totalSgstValue: number;
+  totalFinalValue: number;
   status: Status;
   createdDate: Date;
   updatedDate: Date;
   createdBy: string;
   updatedBy: string;
+}
+
+export class Product {
+  description: string;
+  hsn: number;
+  gstPercentage: number;
+  price: number;
+  quantity: number;
+  taxableValue: number;
+  cgstValue: number;
+  sgstValue: number;
+  finalValue: number;
 }
 
 export class Customer {
@@ -30,6 +44,12 @@ export class Customer {
   country: string;
   pincode: number;
   gstNumber: string;
+
+  constructor(city?: string, state?: string, country?: string) {
+    this.city = city || 'Chennai';
+    this.state = state || 'Tamil Nadu';
+    this.country = country || 'India';
+  }
 }
 
 export class DutyCalculation {

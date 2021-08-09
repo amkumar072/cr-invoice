@@ -68,7 +68,7 @@ const getDocumentContent = (
   buyer: Customer
 ): TDocumentDefinitions => {
 
-  const isDefaultLayout: boolean = String(order.total).length <= 7;
+  const isDefaultLayout: boolean = String(order.totalFinalValue).length <= 7;
 
   // Destructuring pdf constants.
   const {
@@ -264,91 +264,92 @@ const getDocumentContent = (
     } = pdfConstants;
 
     const mainContent = [
-      // 1. Machine cost
-      [
-        DEFAULT,
-        convertToInrString(order.dutyCalculation.assessiableValue),
-        ...createDummyData(3),
-        convertToInrString(order.dutyCalculation.assessiableValue)
-      ],
-      [
-        BASIC,
-        ...createDummyData(1),
-        alignRight('10%'),
-        convertToInrString(order.dutyCalculation.basicTax),
-        ...createDummyData(1),
-        convertToInrString(order.dutyCalculation.basicTax),
-      ],
-      [
-        CVD,
-        ...createDummyData(1),
-        alignRight('5%'),
-        convertToInrString(order.dutyCalculation.cvdTax),
-        ...createDummyData(1),
-        convertToInrString(order.dutyCalculation.cvd),
-      ],
-      [
-        SOCIAL_WELFARE,
-        ...createDummyData(1),
-        alignRight('10%'),
-        convertToInrString(order.dutyCalculation.socialWelfareTax),
-        ...createDummyData(1),
-        convertToInrString(order.dutyCalculation.socialWelfare),
-      ],
-      [
-        IGST,
-        ...createDummyData(1),
-        alignRight('18%'),
-        convertToInrString(order.dutyCalculation.IGST),
-        ...createDummyData(1),
-        convertToInrString(order.dutyCalculation.IGST),
-      ],
-      // machine cost subtotal line
-      [
-        ...createDummyData(5),
-        convertToInrString(order.dutyCalculation.totalValue),
-      ],
-      EMPTY_LINE,
-      EMPTY_LINE,
+      // TODO: Update main content
+      // // 1. Machine cost
+      // [
+      //   DEFAULT,
+      //   convertToInrString(order.dutyCalculation.assessiableValue),
+      //   ...createDummyData(3),
+      //   convertToInrString(order.dutyCalculation.assessiableValue)
+      // ],
+      // [
+      //   BASIC,
+      //   ...createDummyData(1),
+      //   alignRight('10%'),
+      //   convertToInrString(order.dutyCalculation.basicTax),
+      //   ...createDummyData(1),
+      //   convertToInrString(order.dutyCalculation.basicTax),
+      // ],
+      // [
+      //   CVD,
+      //   ...createDummyData(1),
+      //   alignRight('5%'),
+      //   convertToInrString(order.dutyCalculation.cvdTax),
+      //   ...createDummyData(1),
+      //   convertToInrString(order.dutyCalculation.cvd),
+      // ],
+      // [
+      //   SOCIAL_WELFARE,
+      //   ...createDummyData(1),
+      //   alignRight('10%'),
+      //   convertToInrString(order.dutyCalculation.socialWelfareTax),
+      //   ...createDummyData(1),
+      //   convertToInrString(order.dutyCalculation.socialWelfare),
+      // ],
+      // [
+      //   IGST,
+      //   ...createDummyData(1),
+      //   alignRight('18%'),
+      //   convertToInrString(order.dutyCalculation.IGST),
+      //   ...createDummyData(1),
+      //   convertToInrString(order.dutyCalculation.IGST),
+      // ],
+      // // machine cost subtotal line
+      // [
+      //   ...createDummyData(5),
+      //   convertToInrString(order.dutyCalculation.totalValue),
+      // ],
+      // EMPTY_LINE,
+      // EMPTY_LINE,
 
-      // 2. Freight cost
-      [
-        FREIGHT_COST,
-        `${convertToInrString(order.freightCalculation.price).text} * ${convertToInrString(order.freightCalculation.weight).text}`,
-        ...createDummyData(2),
-        convertToInrString(order.freightCalculation.discount),
-        convertToInrString(order.freightCalculation.total)
-      ],
-      EMPTY_LINE,
+      // // 2. Freight cost
+      // [
+      //   FREIGHT_COST,
+      //   `${convertToInrString(order.freightCalculation.price).text} * ${convertToInrString(order.freightCalculation.weight).text}`,
+      //   ...createDummyData(2),
+      //   convertToInrString(order.freightCalculation.discount),
+      //   convertToInrString(order.freightCalculation.total)
+      // ],
+      // EMPTY_LINE,
 
-      // 3. Customization charges
-      [
-        CUSTOMIZATION_CHARGES,
-        convertToInrString(order.customizeCharges.price),
-        ...createDummyData(2),
-        convertToInrString(order.customizeCharges.discount),
-        convertToInrString(order.customizeCharges.total)
-      ],
-      EMPTY_LINE,
+      // // 3. Customization charges
+      // [
+      //   CUSTOMIZATION_CHARGES,
+      //   convertToInrString(order.customizeCharges.price),
+      //   ...createDummyData(2),
+      //   convertToInrString(order.customizeCharges.discount),
+      //   convertToInrString(order.customizeCharges.total)
+      // ],
+      // EMPTY_LINE,
 
-      // 4. Additional Charges
-      [
-        ADDITIONAL_CHARGES,
-        convertToInrString(order.additionalCharges.price),
-        ...createDummyData(2),
-        convertToInrString(order.additionalCharges.discount),
-        convertToInrString(order.additionalCharges.total)
-      ],
-      EMPTY_LINE,
+      // // 4. Additional Charges
+      // [
+      //   ADDITIONAL_CHARGES,
+      //   convertToInrString(order.additionalCharges.price),
+      //   ...createDummyData(2),
+      //   convertToInrString(order.additionalCharges.discount),
+      //   convertToInrString(order.additionalCharges.total)
+      // ],
+      // EMPTY_LINE,
 
-      // 5. Maintenance fees
-      [
-        MAINTENANCE_FEE,
-        convertToInrString(order.annualMaintainanceCharges.price),
-        ...createDummyData(2),
-        convertToInrString(order.annualMaintainanceCharges.discount),
-        convertToInrString(order.annualMaintainanceCharges.total)
-      ],
+      // // 5. Maintenance fees
+      // [
+      //   MAINTENANCE_FEE,
+      //   convertToInrString(order.annualMaintainanceCharges.price),
+      //   ...createDummyData(2),
+      //   convertToInrString(order.annualMaintainanceCharges.discount),
+      //   convertToInrString(order.annualMaintainanceCharges.total)
+      // ],
     ];
 
     return mainContent;
@@ -461,7 +462,7 @@ const getDocumentContent = (
               },
               ...createDummyData(4),
               {
-                text: convertToInrString(order.total),
+                text: convertToInrString(order.totalFinalValue),
                 // Setting the bottom border of the table cell to false.
                 border: [true, true, true, false],
               },
@@ -472,7 +473,7 @@ const getDocumentContent = (
               {
                 // Convert the number to text
                 // text: `${AMOUNT_IN_WORDS_LABEL} ${convertAmountToWords(order.total).toUpperCase()}`,
-                text: `${convertAmountToWords(order.total).toUpperCase()}`,
+                text: `${convertAmountToWords(order.totalFinalValue).toUpperCase()}`,
                 colSpan: '5',
               },
               ...createDummyData(4),

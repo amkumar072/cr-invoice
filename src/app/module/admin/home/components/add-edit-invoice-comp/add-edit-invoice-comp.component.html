@@ -67,168 +67,155 @@
         </ion-col>
 
         <ion-col size-xs="12" size-sm="12" size-md="6" size-lg="6">
-          <ion-item>
-            <ion-label position="floating">InvoiceNumber</ion-label>
-            <ion-input type="text" formControlName="invoiceNumber"></ion-input>
-          </ion-item>
+          <ion-row>
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="floating">InvoiceNumber</ion-label>
+                <ion-input type="text" formControlName="invoiceNumber"></ion-input>
+              </ion-item>
+            </ion-col>
 
-          <ion-item>
-            <ion-label position="floating">Select Date</ion-label>
-            <ion-datetime formControlName="invoiceDate"> </ion-datetime>
-          </ion-item>
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="floating">Invoice Date</ion-label>
+                <ion-datetime formControlName="invoiceDate"> </ion-datetime>
+              </ion-item>
+            </ion-col>
 
-          <ion-item>
-            <ion-label position="floating">Total</ion-label>
-            <ion-input formControlName="total"> </ion-input>
-          </ion-item>
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="floating">Po Number</ion-label>
+                <ion-input type="text" formControlName="poNumber"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="floating">Po Date</ion-label>
+                <ion-datetime formControlName="poDate"> </ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
         </ion-col>
       </ion-row>
 
 
       <ion-row>
         <!-- Duty Calculations -->
-        <ion-col formGroupName="dutyCalculation" size-xs="6" size-sm="6" size-md="6">
-          <ion-card class="ion-padding ion-text-center">
-            <ion-card-subtitle>Duty Calculations</ion-card-subtitle>
-          </ion-card>
+        <ion-col>
+          <div formArrayName="products" *ngFor="let product of form.get('products')['controls']; let i = index;">
+            <div [formGroupName]="i" class="product-field-container">
+              <div class="product-title-container">
+                <div class="product-title">Product - {{i + 1}}</div>
+                <ion-button color="danger" (click)="removeProductFieldsToForm(i)">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+              <ion-row>
+                <ion-col size-md="8" size-sm="12">
+                  <ion-item>
+                    <ion-label position="floating">Description</ion-label>
+                    <ion-input formControlName="description"> </ion-input>
+                  </ion-item>
+                </ion-col>
 
-          <ion-item>
-            <ion-label position="stacked">Invoice Value</ion-label>
-            <ion-input type="number" formControlName="invoiceValue" (ionChange)="onDutyCalChanges()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Exchange Rate</ion-label>
-            <ion-input type="number" formControlName="exchangeRate" (ionChange)="onDutyCalChanges()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Assessiable Value</ion-label>
-            <ion-input formControlName="assessiableValue"></ion-input>
-          </ion-item>
+                <ion-col size-md="4" size-sm="12">
+                  <ion-item>
+                    <ion-label position="floating">HSN</ion-label>
+                    <ion-input formControlName="hsn"> </ion-input>
+                  </ion-item>
+                </ion-col>
 
-          <!-- </ion-col>
+                <ion-col size-md="4" size-sm="12">
+                  <ion-item>
+                    <ion-label position="floating">GST Percentage</ion-label>
+                    <ion-input formControlName="gstPercentage"> </ion-input>
+                  </ion-item>
+                </ion-col>
 
-        <ion-col size-xs="6" size-sm="6" size-md="4"> -->
-          <ion-item>
-            <ion-label position="stacked">basicTax</ion-label>
-            <ion-input formControlName="basicTax"></ion-input>
+                <ion-col size-md="4" size-sm="12">
+                  <ion-item>
+                    <ion-label position="floating">Price</ion-label>
+                    <ion-input formControlName="price"> </ion-input>
+                  </ion-item>
+                </ion-col>
 
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">cvd</ion-label>
-            <ion-input formControlName="cvd"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">socialWelfare</ion-label>
-            <ion-input formControlName="socialWelfare"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">IGST</ion-label>
-            <ion-input formControlName="IGST"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Total Value</ion-label>
-            <ion-input formControlName="totalValue"></ion-input>
-          </ion-item>
-        </ion-col>
+                <ion-col size-md="4" size-sm="12">
+                  <ion-item>
+                    <ion-label position="floating">Quantity</ion-label>
+                    <ion-input formControlName="quantity"> </ion-input>
+                  </ion-item>
+                </ion-col>
 
-        <!-- Freight Calculations -->
-        <ion-col formGroupName="freightCalculation" size-xs="6" size-sm="6" size-md="6">
-          <ion-card class="ion-padding ion-text-center">
-            <ion-card-subtitle>Freight Calculations</ion-card-subtitle>
-          </ion-card>
-          <ion-item>
-            <ion-label position="stacked">Price</ion-label>
-            <ion-input type="number" formControlName="price" (ionChange)="onFreightCalChanges()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Weight</ion-label>
-            <ion-input type="number" formControlName="weight" (ionChange)="onFreightCalChanges()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Sub Value</ion-label>
-            <ion-input formControlName="subTotal"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Discount</ion-label>
-            <ion-input type="number" formControlName="discount" (ionChange)="onFreightCalChanges()"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked"> Total</ion-label>
-            <ion-input formControlName="total"></ion-input>
-          </ion-item>
+                <ion-col size-md="3" size-sm="12">
+                  <ion-item>
+                    <ion-label class="opacity-7" position="floating">Taxable Value</ion-label>
+                    <ion-input class="opacity-7" formControlName="taxableValue" readonly> </ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size-md="3" size-sm="12">
+                  <ion-item>
+                    <ion-label class="opacity-7" position="floating">Cgst Value</ion-label>
+                    <ion-input class="opacity-7" formControlName="cgstValue" readonly> </ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size-md="3" size-sm="12">
+                  <ion-item>
+                    <ion-label class="opacity-7" position="floating">Sgst Value</ion-label>
+                    <ion-input class="opacity-7" formControlName="sgstValue" readonly> </ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size-md="3" size-sm="12">
+                  <ion-item>
+                    <ion-label class="opacity-7 bold" position="floating">Final Value</ion-label>
+                    <ion-input class="opacity-7 bold" formControlName="finalValue" readonly> </ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
         </ion-col>
       </ion-row>
 
-
       <ion-row>
-
-
-        <!-- Customize Charges -->
-        <ion-col formGroupName="customizeCharges" size-xs="4" size-sm="4" size-md="4">
-          <ion-card class="ion-padding ion-text-center">
-            <ion-card-subtitle>Customize Charges</ion-card-subtitle>
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Taxable Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalTaxableValue}}</ion-card-title>
+            </ion-card-header>
           </ion-card>
-          <ion-item>
-            <ion-label position="stacked">Price</ion-label>
-            <ion-input type="number" formControlName="price" (ionChange)="onCustomizeChargesChanages()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Discount</ion-label>
-            <ion-input type="number" formControlName="discount" (ionChange)="onCustomizeChargesChanages()"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked"> Total</ion-label>
-            <ion-input formControlName="total"></ion-input>
-          </ion-item>
         </ion-col>
 
-
-        <!-- Additional Charges -->
-        <ion-col formGroupName="additionalCharges" size-xs="4" size-sm="4" size-md="4">
-          <ion-card class="ion-padding ion-text-center">
-            <ion-card-subtitle>Additional Charges</ion-card-subtitle>
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Cgst Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalCgstValue}}</ion-card-title>
+            </ion-card-header>
           </ion-card>
-          <ion-item>
-            <ion-label position="stacked">Price</ion-label>
-            <ion-input type="number" formControlName="price" (ionChange)="onAdditionalChargesChanages()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Discount</ion-label>
-            <ion-input type="number" formControlName="discount" (ionChange)="onAdditionalChargesChanages()"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked"> Total</ion-label>
-            <ion-input formControlName="total"></ion-input>
-          </ion-item>
         </ion-col>
 
-        <!-- Annual Maintainance Charges -->
-        <ion-col formGroupName="annualMaintainanceCharges" size-xs="4" size-sm="4" size-md="4">
-          <ion-card class="ion-padding ion-text-center">
-            <ion-card-subtitle>Annual Maintainance</ion-card-subtitle>
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Sgst Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalSgstValue}}</ion-card-title>
+            </ion-card-header>
           </ion-card>
-          <ion-item>
-            <ion-label position="stacked">Price</ion-label>
-            <ion-input type="number" formControlName="price" (ionChange)="onAnnualMaintainanceChargesChanages()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Discount</ion-label>
-            <ion-input type="number" formControlName="discount" (ionChange)="onAnnualMaintainanceChargesChanages()">
-            </ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked"> Total</ion-label>
-            <ion-input formControlName="total"></ion-input>
-          </ion-item>
         </ion-col>
 
+        <ion-col size-md="3" size-sm="6">
+          <ion-card class="ion-text-center">
+            <ion-card-header>
+              <ion-card-subtitle>Total Final Value</ion-card-subtitle>
+              <ion-card-title>{{form.value.totalFinalValue}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
       </ion-row>
 
       <ion-row>
@@ -249,4 +236,10 @@
     </ion-grid>
 
   </form>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="danger" (click)="addNewProductFieldsToForm()">
+      <ion-icon name="add">Add Product</ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </div>
