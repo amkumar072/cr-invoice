@@ -1,6 +1,7 @@
 {
   "projects": {
     "dev": "creative-power-9f413",
-    "prod": "creative-power-9f413"
+    "prod": "creative-power-9f413",
+    "default": "creative-power-9f413"
   }
 }
